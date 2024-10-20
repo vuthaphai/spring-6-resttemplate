@@ -56,6 +56,8 @@ public class BeerDTOPageDeserializer extends JsonDeserializer<BeerDTOPageImpl<Be
         System.out.println("Total: " + total);
 
         return new BeerDTOPageImpl<>(beers, PageRequest.of(page, size), total);
+//        return null;
+
 
     }
 }

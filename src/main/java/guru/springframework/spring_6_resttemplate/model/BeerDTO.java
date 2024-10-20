@@ -1,5 +1,7 @@
 package guru.springframework.spring_6_resttemplate.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -20,7 +22,17 @@ public class BeerDTO {
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
 
-    public BeerDTO(UUID id, Integer version, String beerName, BeerStyle beerStyle, String upc, Integer quantityOnHand, BigDecimal price, LocalDateTime createdDate, LocalDateTime updateDate) {
+    @JsonCreator
+    public BeerDTO(
+            @JsonProperty("id") UUID id,
+            @JsonProperty("version") Integer version,
+            @JsonProperty("beerName") String beerName,
+            @JsonProperty("beerStyle") BeerStyle beerStyle,
+            @JsonProperty("upc") String upc,
+            @JsonProperty("quantityOnHand") Integer quantityOnHand,
+            @JsonProperty("price") BigDecimal price,
+            @JsonProperty("createdDate") LocalDateTime createdDate,
+            @JsonProperty("updateDate") LocalDateTime updateDate) {
         this.id = id;
         this.version = version;
         this.beerName = beerName;
@@ -30,5 +42,8 @@ public class BeerDTO {
         this.price = price;
         this.createdDate = createdDate;
         this.updateDate = updateDate;
+    }
+    // No-args constructor
+    public BeerDTO() {
     }
 }
