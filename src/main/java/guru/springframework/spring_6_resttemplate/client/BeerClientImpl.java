@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RequiredArgsConstructor
 @Service
@@ -19,22 +20,23 @@ public class BeerClientImpl implements BeerClient {
 
     private final RestTemplateBuilder restTemplateBuilder;
 
-    private static final String BASE_URL = "http://localhost:8080";
     private static final String GET_BEER_PATH = "/api/v1/beer";
 
 
 
     @Override
-    public Page<BeerDTO> listBeers() {
+    public Page<BeerDTO> listBeers(String beerName) {
         RestTemplate restTemplate = restTemplateBuilder.build();
 
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromPath(GET_BEER_PATH);
 
+        if (beerName != null) {
+            uriComponentsBuilder.queryParam("beerName", beerName);
+        }
 
-        // Log before making the request
-        System.out.println("Making a request to: " + BASE_URL + GET_BEER_PATH);
 
         ResponseEntity<BeerDTOPageImpl<BeerDTO>> response = restTemplate.exchange(
-                BASE_URL + GET_BEER_PATH,
+                 uriComponentsBuilder.toUriString(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<BeerDTOPageImpl<BeerDTO>>() {}
