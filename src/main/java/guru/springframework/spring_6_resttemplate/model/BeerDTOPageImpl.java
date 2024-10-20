@@ -1,11 +1,7 @@
 package guru.springframework.spring_6_resttemplate.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -16,8 +12,8 @@ import java.util.List;
 //
 //    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
 //    public RestPageImpl(@JsonProperty("content") List<T> content,
-//                        @JsonProperty("number") int page,
-//                        @JsonProperty("size") int size,
+//                        @JsonProperty("pageNumber") int page,
+//                        @JsonProperty("pageSize") int size,
 //                        @JsonProperty("totalElements") long total) {
 //
 //        super(content, PageRequest.of(page,size),total);
@@ -32,14 +28,14 @@ import java.util.List;
 ////    }
 //}
 
-@JsonDeserialize(using = RestPageDeserializer.class)
-public class RestPageImpl<T> extends PageImpl<T> {
-    public RestPageImpl(List<T> content, Pageable pageable, long total) {
+@JsonDeserialize(using = BeerDTOPageDeserializer.class)
+public class BeerDTOPageImpl<T> extends PageImpl<T> {
+    public BeerDTOPageImpl(List<T> content, Pageable pageable, long total) {
         super(content, pageable, total);
         System.out.println("content = " + content + ", pageable = " + pageable + ", total = " + total);
     }
 
-    public RestPageImpl(List<T> content) {
+    public BeerDTOPageImpl(List<T> content) {
         super(content);
     }
     // Your existing constructors

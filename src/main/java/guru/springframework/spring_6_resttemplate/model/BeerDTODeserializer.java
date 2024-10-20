@@ -14,9 +14,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+
 public class BeerDTODeserializer extends JsonDeserializer<BeerDTO> {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    private static final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
+            .optionalStart()
+            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
+            .optionalEnd()
+            .toFormatter();
 
     @Override
     public BeerDTO deserialize(JsonParser p, DeserializationContext ctxt)
@@ -62,5 +70,7 @@ public class BeerDTODeserializer extends JsonDeserializer<BeerDTO> {
         return node.has(field) && !node.get(field).isNull() ? LocalDateTime.parse(node.get(field).asText(), formatter) : null;
     }
 }
+
+
 
 

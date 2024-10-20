@@ -1,6 +1,5 @@
 package guru.springframework.spring_6_resttemplate.model;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -14,10 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestPageDeserializer extends JsonDeserializer<RestPageImpl<BeerDTO>> {
+public class BeerDTOPageDeserializer extends JsonDeserializer<BeerDTOPageImpl<BeerDTO>> {
 
     @Override
-    public RestPageImpl<BeerDTO> deserialize(JsonParser p, DeserializationContext ctxt)
+    public BeerDTOPageImpl<BeerDTO> deserialize(JsonParser p, DeserializationContext ctxt)
             throws IOException, JsonProcessingException {
 
         ObjectMapper mapper = (ObjectMapper) p.getCodec();
@@ -31,29 +30,32 @@ public class RestPageDeserializer extends JsonDeserializer<RestPageImpl<BeerDTO>
 
 
 
-        JsonNode embedded = node.get("_embedded");
-        JsonNode beerArray = embedded.get("beer");
-
+        JsonNode beerArray = node.get("content");
         List<BeerDTO> beers = new ArrayList<>();
         for (JsonNode beerNode : beerArray) {
             BeerDTO beer = mapper.treeToValue(beerNode, BeerDTO.class);
             beers.add(beer);
         }
 
-        // Access the page object
-        JsonNode pageNode = node.get("page");
+        // Ensure 'page' node exists before accessing
+        JsonNode pageableNode = node.get("pageable");
+        if (pageableNode == null) {
+            throw new JsonProcessingException("Missing 'pageable' node in JSON") {};
+        }
 
         // Now access the properties from the pageNode
-        int page = pageNode.get("number").asInt();
-        int size = pageNode.get("size").asInt();
-        long total = pageNode.get("totalElements").asLong();
+
+        int page = pageableNode.has("pageNumber") && !pageableNode.get("pageNumber").isNull() ? pageableNode.get("pageNumber").asInt() : 0;
+        int size = pageableNode.has("pageSize") && !pageableNode.get("pageSize").isNull() ? pageableNode.get("pageSize").asInt() : 0;
+        long total = node.has("totalElements") && !node.get("totalElements").isNull() ? node.get("totalElements").asLong() : 0L;
+
 
         // Log the values retrieved
         System.out.println("Page: " + page);
         System.out.println("Size: " + size);
         System.out.println("Total: " + total);
 
-        return new RestPageImpl<>(beers, PageRequest.of(page, size), total);
+        return new BeerDTOPageImpl<>(beers, PageRequest.of(page, size), total);
 
     }
 }
