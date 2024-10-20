@@ -41,9 +41,9 @@ public class BeerDTODeserializer extends JsonDeserializer<BeerDTO> {
         Integer quantityOnHand = getInt(node, "quantityOnHand");
         BigDecimal price = getBigDecimal(node, "price");
         LocalDateTime createdDate = getLocalDateTime(node, "createdDate", formatter);
-        LocalDateTime lastModifiedDate = getLocalDateTime(node, "lastModifiedDate", formatter);
+        LocalDateTime updateDate = getLocalDateTime(node, "updateDate", formatter);
 
-        return new BeerDTO(id, version, beerName, beerStyle, upc, quantityOnHand, price, createdDate, lastModifiedDate);
+        return new BeerDTO(id, version, beerName, beerStyle, upc, quantityOnHand, price, createdDate, updateDate);
     }
 
     private UUID getUUID(JsonNode node, String field) {
