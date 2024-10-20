@@ -33,7 +33,7 @@ public class BeerClientImpl implements BeerClient {
         // Log before making the request
         System.out.println("Making a request to: " + BASE_URL + GET_BEER_PATH);
 
-        ResponseEntity<BeerDTOPageImpl<BeerDTO>> stringResponse = restTemplate.exchange(
+        ResponseEntity<BeerDTOPageImpl<BeerDTO>> response = restTemplate.exchange(
                 BASE_URL + GET_BEER_PATH,
                 HttpMethod.GET,
                 null,
@@ -41,14 +41,14 @@ public class BeerClientImpl implements BeerClient {
         );
 
         // Log the response headers
-        HttpHeaders headers = stringResponse.getHeaders();
+        HttpHeaders headers = response.getHeaders();
         MediaType contentType = headers.getContentType();
         System.out.println("Response Content-Type: " + contentType);
 
         // Log after receiving the response
-        System.out.println("Response Body: " + stringResponse.getBody());
+        System.out.println("Response Body: " + response.getBody());
 
-        return stringResponse.getBody();
+        return response.getBody();
     }
 
 
