@@ -1,0 +1,13 @@
+guru/springframework/spring_6_resttemplate/configs/JacksonConfig.class
+guru/springframework/spring_6_resttemplate/configs/RestTemplateBuilderConfig.class
+guru/springframework/spring_6_resttemplate/model/BeerDTOPageImpl.class
+guru/springframework/spring_6_resttemplate/model/BeerDTOPageDeserializer.class
+guru/springframework/spring_6_resttemplate/model/BeerDTO$BeerDTOBuilder.class
+guru/springframework/spring_6_resttemplate/Spring6ResttemplateApplication.class
+guru/springframework/spring_6_resttemplate/model/BeerDTOPageDeserializer$1.class
+guru/springframework/spring_6_resttemplate/client/BeerClientImpl.class
+guru/springframework/spring_6_resttemplate/model/BeerDTOPageDeserializer$2.class
+guru/springframework/spring_6_resttemplate/model/BeerStyle.class
+guru/springframework/spring_6_resttemplate/model/BeerDTODeserializer.class
+guru/springframework/spring_6_resttemplate/client/BeerClient.class
+guru/springframework/spring_6_resttemplate/model/BeerDTO.class

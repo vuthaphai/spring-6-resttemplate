@@ -1,6 +1,5 @@
 package guru.springframework.spring_6_resttemplate.model;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -10,21 +9,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
-
 public class BeerDTODeserializer extends JsonDeserializer<BeerDTO> {
 
-    private static final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-            .appendPattern("yyyy-MM-dd'T'HH:mm:ss")
-            .optionalStart()
-            .appendFraction(ChronoField.NANO_OF_SECOND, 0, 9, true)
-            .optionalEnd()
-            .toFormatter();
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
     @Override
     public BeerDTO deserialize(JsonParser p, DeserializationContext ctxt)
@@ -40,10 +32,12 @@ public class BeerDTODeserializer extends JsonDeserializer<BeerDTO> {
         String upc = getString(node, "upc");
         Integer quantityOnHand = getInt(node, "quantityOnHand");
         BigDecimal price = getBigDecimal(node, "price");
-        LocalDateTime createdDate = getLocalDateTime(node, "createdDate", formatter);
-        LocalDateTime updateDate = getLocalDateTime(node, "updateDate", formatter);
+        OffsetDateTime createdDate = getOffsetDateTime(node, "createdDate", formatter);
+        OffsetDateTime lastModifiedDate = getOffsetDateTime(node, "lastModifiedDate", formatter);
 
-        return new BeerDTO(id, version, beerName, beerStyle, upc, quantityOnHand, price, createdDate, updateDate);
+        System.out.println("Deserialized BeerDTO: " + id + ", " + beerName + ", " + createdDate);
+
+        return new BeerDTO(id, version, beerName, beerStyle, upc, quantityOnHand, price, createdDate, lastModifiedDate);
     }
 
     private UUID getUUID(JsonNode node, String field) {
@@ -66,8 +60,8 @@ public class BeerDTODeserializer extends JsonDeserializer<BeerDTO> {
         return node.has(field) && !node.get(field).isNull() ? new BigDecimal(node.get(field).asText()) : null;
     }
 
-    private LocalDateTime getLocalDateTime(JsonNode node, String field, DateTimeFormatter formatter) {
-        return node.has(field) && !node.get(field).isNull() ? LocalDateTime.parse(node.get(field).asText(), formatter) : null;
+    private OffsetDateTime getOffsetDateTime(JsonNode node, String field, DateTimeFormatter formatter) {
+        return node.has(field) && !node.get(field).isNull() ? OffsetDateTime.parse(node.get(field).asText(), formatter) : null;
     }
 }
 

@@ -32,7 +32,7 @@ class BeerClientImplTest {
         System.out.println("Created beer: " + beerDto);
         beerClient.deleteBeer(beerDto.getId());
 
-        assertThrows(HttpClientErrorException.class,() -> {
+        assertThrows(HttpClientErrorException.class, () -> {
             beerClient.getBeerById(beerDto.getId());
         });
 
@@ -63,8 +63,6 @@ class BeerClientImplTest {
     }
 
 
-
-
     @Test
     void testCreateBeer() {
 
@@ -83,26 +81,47 @@ class BeerClientImplTest {
     }
 
 
+//    @Test
+//    void getBeerById() {
+//
+//        Page<BeerDTO> beerDTOS = beerClient.listBeers();
+//
+//        BeerDTO dto = beerDTOS.getContent().getFirst();
+//
+//        BeerDTO byId = beerClient.getBeerById(dto.getId());
+//
+//        assertNotNull(byId);
+//    }
+
     @Test
     void getBeerById() {
 
         Page<BeerDTO> beerDTOS = beerClient.listBeers();
 
-        BeerDTO dto = beerDTOS.getContent().getFirst();
+        // Assuming listBeers() is not empty
+        assertNotNull(beerDTOS);
+        assertFalse(beerDTOS.getContent().isEmpty());
+
+        BeerDTO dto = beerDTOS.getContent().get(0); // Use get(0) to fetch the first element
+
+        System.out.println("Fetching beer with ID: " + dto.getId());
 
         BeerDTO byId = beerClient.getBeerById(dto.getId());
+
+        System.out.println("Fetched beer: " + byId);
 
         assertNotNull(byId);
     }
 
+
     @Test
     void listBeersNoBeerName() {
-        beerClient.listBeers(null,null ,null ,null ,null);
+        beerClient.listBeers(null, null, null, null, null);
     }
 
     @Test
     void listBeers() {
-        beerClient.listBeers("ALE", null ,null ,null ,null);
+        beerClient.listBeers("ALE", null, null, null, null);
     }
 
 }

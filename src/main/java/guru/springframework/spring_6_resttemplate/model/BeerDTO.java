@@ -1,16 +1,18 @@
 package guru.springframework.spring_6_resttemplate.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Builder
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BeerDTO {
     private UUID id;
     private Integer version;
@@ -19,10 +21,11 @@ public class BeerDTO {
     private String upc;
     private Integer quantityOnHand;
     private BigDecimal price;
-    private LocalDateTime createdDate;
-    private LocalDateTime updateDate;
+    private OffsetDateTime createdDate;
+    private OffsetDateTime lastModifiedDate;
 
     @JsonCreator
+
     public BeerDTO(
             @JsonProperty("id") UUID id,
             @JsonProperty("version") Integer version,
@@ -31,8 +34,8 @@ public class BeerDTO {
             @JsonProperty("upc") String upc,
             @JsonProperty("quantityOnHand") Integer quantityOnHand,
             @JsonProperty("price") BigDecimal price,
-            @JsonProperty("createdDate") LocalDateTime createdDate,
-            @JsonProperty("updateDate") LocalDateTime updateDate) {
+            @JsonProperty("createdDate") OffsetDateTime createdDate,
+            @JsonProperty("lastModifiedDate") OffsetDateTime lastModifiedDate) {
         this.id = id;
         this.version = version;
         this.beerName = beerName;
@@ -41,8 +44,9 @@ public class BeerDTO {
         this.quantityOnHand = quantityOnHand;
         this.price = price;
         this.createdDate = createdDate;
-        this.updateDate = updateDate;
+        this.lastModifiedDate = lastModifiedDate;
     }
+
     // No-args constructor
     public BeerDTO() {
     }

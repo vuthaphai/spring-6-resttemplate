@@ -1,0 +1,10 @@
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/Spring6ResttemplateApplication.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/client/BeerClient.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/client/BeerClientImpl.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/configs/JacksonConfig.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/configs/RestTemplateBuilderConfig.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/model/BeerDTO.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/model/BeerDTODeserializer.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/model/BeerDTOPageDeserializer.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/model/BeerDTOPageImpl.java
+/Users/vuthaphai/Documents/learning/spring-6-resttemplate/src/main/java/guru/springframework/spring_6_resttemplate/model/BeerStyle.java
