@@ -22,11 +22,9 @@ import java.util.UUID;
 @Service
 public class BeerClientImpl implements BeerClient {
 
+    public static final String GET_BEER_PATH = "/api/v1/beer";
+    public static final String GET_BEER_BY_ID_PATH = "/api/v1/beer/{beerId}";
     private final RestTemplateBuilder restTemplateBuilder;
-
-    private static final String GET_BEER_PATH = "/api/v1/beer";
-    private static final String GET_BEER_BY_ID_PATH = "/api/v1/beer/{beerId}";
-
 
     @Override
     public void deleteBeer(UUID beerId) {
@@ -68,28 +66,31 @@ public class BeerClientImpl implements BeerClient {
     }
 
 
-
     @Override
     public BeerDTO createBeer(BeerDTO newBeerDto) {
 
-        RestTemplate restTemplate =  restTemplateBuilder.build();
+        RestTemplate restTemplate = restTemplateBuilder.build();
 
-        ResponseEntity<BeerDTO> response = restTemplate.postForEntity(GET_BEER_PATH, newBeerDto,BeerDTO.class);
-        URI uri = restTemplate.postForLocation(GET_BEER_PATH, newBeerDto);
+        // Use postForEntity to get the response with headers, including the location
+        ResponseEntity<BeerDTO> response = restTemplate.postForEntity(GET_BEER_PATH, newBeerDto, BeerDTO.class);
+
+        // Extract the Location header to get the URI of the newly created resource
+        URI uri = response.getHeaders().getLocation();
+        System.out.println("uri = " + uri);
 
         assert uri != null;
-        return restTemplate.getForObject(uri.getPath(),BeerDTO.class);
+        return restTemplate.getForObject(uri, BeerDTO.class);
     }
 
     @Override
     public BeerDTO getBeerById(UUID beerId) {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        return restTemplate.getForObject(GET_BEER_BY_ID_PATH, BeerDTO.class,beerId);
+        return restTemplate.getForObject(GET_BEER_BY_ID_PATH, BeerDTO.class, beerId);
     }
 
     @Override
     public Page<BeerDTO> listBeers() {
-        return this.listBeers(null,null,null,null,null);
+        return this.listBeers(null, null, null, null, null);
     }
 
     @Override
@@ -143,7 +144,6 @@ public class BeerClientImpl implements BeerClient {
             return Page.empty(); // or handle the exception as needed
         }
     }
-
 
 
 }

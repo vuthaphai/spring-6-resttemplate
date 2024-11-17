@@ -25,7 +25,12 @@ public class BeerDTODeserializer extends JsonDeserializer<BeerDTO> {
         ObjectMapper mapper = (ObjectMapper) p.getCodec();
         JsonNode node = mapper.readTree(p);
 
-        UUID id = getUUID(node, "id");
+        System.out.println("node = " + node);
+
+        // Extract UUID from href in _links.self
+        String href = node.get("_links").get("self").get("href").asText();
+        UUID id = UUID.fromString(href.substring(href.lastIndexOf('/') + 1));
+
         Integer version = getInt(node, "version");
         String beerName = getString(node, "beerName");
         BeerStyle beerStyle = getEnum(node, "beerStyle", BeerStyle.class);

@@ -40,16 +40,31 @@ public class BeerDTOPageDeserializer extends JsonDeserializer<BeerDTOPageImpl<Be
         // Log the entire node structure
         System.out.println("JSON Node: " + node.toString());
 
+//        JsonNode contentNode = node.get("_embedded");
         JsonNode contentNode = node.get("_embedded");
         if (contentNode == null) {
-            throw new JsonProcessingException("Missing '_embedded' node in JSON") {
-            };
+            contentNode = node.get("content");
+            if (contentNode == null) {
+                throw new JsonProcessingException("Missing '_embedded' node in JSON") {
+                };
+            }
+
         }
 
         List<BeerDTO> beers = new ArrayList<>();
-        for (JsonNode beerNode : contentNode.get("beer")) {
-            String href = beerNode.get("_links").get("self").get("href").asText();
-            UUID id = UUID.fromString(href.substring(href.lastIndexOf('/') + 1)); // Extract UUID from href
+        JsonNode content = contentNode.get("beer");
+        if (content == null) {
+            content = contentNode;
+        }
+
+        for (JsonNode beerNode : content) {
+
+            UUID id = getUUID(beerNode, "id");
+            if (id == null) {
+                String href = beerNode.get("_links").get("self").get("href").asText();
+                id = UUID.fromString(href.substring(href.lastIndexOf('/') + 1)); // Extract UUID from href
+            }
+
             String beerName = getString(beerNode, "beerName");
             String beerStyle = getString(beerNode, "beerStyle");
             String upc = getString(beerNode, "upc");
@@ -62,9 +77,13 @@ public class BeerDTOPageDeserializer extends JsonDeserializer<BeerDTOPageImpl<Be
         }
 
         JsonNode pageNode = node.get("page");
+
         if (pageNode == null) {
-            throw new JsonProcessingException("Missing 'page' node in JSON") {
-            };
+            pageNode = node.get("pageable");
+            if (pageNode == null) {
+                throw new JsonProcessingException("Missing 'page' node in JSON") {
+                };
+            }
         }
 
         int page = pageNode.has("number") && !pageNode.get("number").isNull() ? pageNode.get("number").asInt() : 0;
@@ -77,6 +96,10 @@ public class BeerDTOPageDeserializer extends JsonDeserializer<BeerDTOPageImpl<Be
         System.out.println("Total: " + total);
 
         return new BeerDTOPageImpl<>(beers, PageRequest.of(page, size), total);
+    }
+
+    private UUID getUUID(JsonNode node, String field) {
+        return node.has(field) && !node.get(field).isNull() ? UUID.fromString(node.get(field).asText()) : null;
     }
 
     private String getString(JsonNode node, String field) {
