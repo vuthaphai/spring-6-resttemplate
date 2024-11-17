@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.spring_6_resttemplate.configs.RestTemplateBuilderConfig;
 import guru.springframework.spring_6_resttemplate.model.BeerDTO;
-import guru.springframework.spring_6_resttemplate.model.BeerDTOPageImpl;
 import guru.springframework.spring_6_resttemplate.model.BeerStyle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,6 @@ import org.springframework.boot.test.web.client.MockServerRestTemplateCustomizer
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -24,8 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -146,10 +142,10 @@ public class BeerClientMockTest {
                 .build();
     }
 
-    BeerDTOPageImpl getPage() {
-        List<BeerDTO> beers = new ArrayList<>();
-        beers.add(getBeerDto());
-        return new BeerDTOPageImpl(beers, PageRequest.of(1, 25), 1);
-    }
+//    BeerDTOPageImpl getPage() {
+//        List<BeerDTO> beers = new ArrayList<>();
+//        beers.add(getBeerDto());
+//        return new BeerDTOPageImpl(beers, PageRequest.of(1, 25), 1);
+//    }
 
 }
